@@ -1,2 +1,63 @@
+---
+title: STATUS_CODE
+sidebar_position: 4
+description: Here is the current list of status code returned when using TinyDatabase
+---
 
-### Blabla
+> They status code are returned after some actions. You can check their values
+to know what happens
+
+
+## Success code
+
+### Table creation succeeded
+
+```cpp
+const int STATUS_TABLE_CREATED = -200;  // Table creation succeeded
+```
+
+### Table already exist
+
+```cpp
+const int STATUS_TABLE_EXIST = -201;    // Table already exist
+```
+
+### Memory is available
+
+```cpp
+const int STATUS_SUF_MEMORY = -204;  // Sufficient memory - memory is available
+```
+
+## Error code
+
+### Table not found
+
+```cpp
+const int STATUS_TABLE_NOT_FOUND = -401;  // Table not found
+```
+
+### Column not found
+
+```cpp
+const int STATUS_COL_NOT_FOUND = -402;    // Column not found
+```
+
+### Insufficient memory
+
+```cpp
+const int STATUS_INSUF_MEMORY = -404;     // Insufficient memory
+```
+
+### Maximum of capacity exceeded  
+
+```cpp
+const int STATUS_MAX_CAP_EXCEEDED = -405; // Maximum of capacity exceeded 
+```
+
+## Example
+
+```cpp title="example"
+if (mem.CREATE_TABLE("EM") == STATUS_INSUF_MEMORY) {
+	Serial.println("Table creation failed due to insuffient memory!!");
+}
+```

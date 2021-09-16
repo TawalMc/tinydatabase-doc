@@ -1,3 +1,45 @@
 ---
+title: Column
 sidebar_position: 2
+description: Column structure is used to create tables columns
 ---
+
+> Column is a structure used to create table's columns.
+
+```cpp title="prototype"
+struct Column {
+    char name[3];
+    char* type;
+  };
+```
+
+1. `name`: the column name - no more than 2 char. And we count also 
+null terminated sequence `\0` as a character.
+
+2. `type`: the column type. Read more about [TinyDatabase types](../Types)
+
+
+```cpp title="example"
+Column ag = {"ag", "INT"};
+Column rt = {"rt", "FLOAT"};
+Column tm = {"tm", "ULONG"};
+
+Column allCols[] = {ag, rt, tm};
+
+// or directly 
+Column myCols[] = {
+					{"ag", "INT"},
+					{"rt", "FLOAT"},
+					{"tm", "ULONG"}
+				};
+```
+
+Here we create 03 columns named **ag**, **rt** and **tm** of types **INT**,
+**FLOAT** and **ULONG**.
+
+## String
+
+We don't support arduino `String` data type. But a good support for `array char` is
+provided. So you can convert a String to an array of char and use TinyDatabase. 
+Read more about [TinyDatabase types](../Types) to know more about `char[]`.
+

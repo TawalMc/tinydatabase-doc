@@ -1,0 +1,30 @@
+---
+title: FILTER
+sidebar_position: 4
+description: When use WHERE, we can filter data to match some requirements
+---
+
+> FILTER is an enumeration used to filter data of table. Its compare the data
+of the specified column and keep only that which match the filter.
+
+```cpp title="prototype"
+enum FILTER {
+    isLessThan,
+    isGreaterThan,
+    isEqualTo,
+    isLessOrEqualTo,
+    isGreaterOrEqualTo,
+    isNotEqualTo
+  };
+
+```  
+
+```cpp title="example"
+int new_adult = 10;
+float great_rate = 0;
+
+mem.FROM("EM")
+	.WHERE("ag", FILTER::isEqualTo, &new_adult)
+	.SELECT("rt", &great_rate, 1)
+	.DONE();
+```

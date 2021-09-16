@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 (module.exports = {
   title: 'TinyDatabase',
   tagline: 'An easy way to manipulate EEPROM data on electronic boards',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://tinydatabase-doc.vercel.app/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -22,13 +22,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+          editUrl: 'https://github.com/TawalMc/tinydatabase-doc/tree/main',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/main/website/blog/',
+            'https://github.com/TawalMc/tinydatabase-doc/tree/main/blog',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -55,7 +55,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/TawalMc/TinyDatabase_Arduino',
+            href: 'https://github.com/TawalMc/tinydatabase-doc',
             label: 'GitHub',
             position: 'right',
           },
@@ -108,7 +108,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} TinyDatabase doc by Tawaliou and generated with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,

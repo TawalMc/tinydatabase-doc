@@ -5,7 +5,7 @@ description: MemoryManager is the main class used to access to the data base
 ---
 
 > MemoryManager is the main class used to access data base. You need
-an object of this class to write/read of tables.
+an object of this class to work on tables.
 
 ## TinyDatabase header
 
@@ -28,6 +28,19 @@ To create an object
 ```cpp title="example"
 MemoryManager mem;
 ```
+
+### Erase all
+
+If it is a new project, be sure to clear all the EEPROM with
+
+```cpp title="prototype"
+void clearAll()
+```
+
+```cpp	title="exemple"
+mem.clearAll();
+```
+
 
 ### Table creation
 

@@ -1,3 +1,331 @@
 ---
+title: TableData
 sidebar_position: 3
+description: TableData is the class used to work on a table data.
 ---
+
+> TableData is the main class used to manipulate a tabale data. You
+need an object of this class to access a table's data.
+
+
+You need firstly an object of `MemoryManager` type
+
+```cpp title="example"
+MemoryManager mem;
+```
+
+then you can use either `TO` or `FROM` methods.
+
+## INSERT
+
+With this methods you can add a new data at the end of a table.
+Library auto calculates the next position.
+
+### Numerics data
+
+```cpp title="example"
+template <typename T>
+TableData& INSERT(char* c_name, const T* data)
+```
+
+1. `c_name`: the column name where you want to store the new data
+
+2. `data`: a pointer to a numeric data which contains the value to store
+
+```cpp title="example"
+int new_age = 25;
+float new_rate = 8.3;
+
+mem.TO("EM")
+	.INSERT("ag", &new_age)
+	.INSERT("rt", &new_rate)
+	.DONE();
+```
+
+In this example, we insert two data __new_age__ and __new_rate__ on the 
+**ag** and **rt** of the **EM** table.
+
+:::caution
+- data type to store must match column data type set when creating the table
+- if the column doesn't exist (wrong name after took the first 02 chars) no data
+at this line will not be stored
+- Don't forget to call `DONE` at the end othwersie the INSERT operation will override 
+the last date in the table and will not update the number of data in the table
+:::
+
+### Array of char
+
+If it is an array of char use the specialized version of `INSERT` function.
+
+```cpp title="prototype"
+TableData& INSERT(char* c_name, char* data)
+```
+
+1. `c_name`: the column name where you want to store the new data
+
+2. `data`: the char sequence
+
+```cpp	title="example"
+char hello[] = "Bonsoir";
+
+mem.TO("EM")
+	.INSERT("nm", hello)
+	.DONE();
+```
+
+## UPDATE
+
+You can override a data at a position/index. It is like an INSERT operation but
+you can precise the index you want of data you want to override.
+
+### Numerics data
+
+```cpp title="prototype"
+template <typename T>
+TableData& UPDATE(char* c_name, const T* data, int nth)
+```
+
+1. `c_name`: the column name where you want to update the new data
+
+2. `data`: a pointer to a numeric data which contains the value to store
+
+3. `nth`: the index/position where you want to override the data. 
+
+```cpp title="example"
+int new_age = 25;
+float new_rate = 8.3;
+
+mem.TO("EM")
+	.UPDATE("ag", &new_age, 2)
+	.UPDATE("rt", &new_rate, 2)
+	.DONE();
+```
+
+We override data at position 2 (third data) of the table.
+
+### Array of char
+
+If it is an array of char use the specialized version of `UPDATE` function.
+
+```cpp title="example"
+TableData& UPDATE(char* c_name, char* data, int nth)
+```
+
+1. `c_name`: the column name where you want to update the new data
+
+2. `data`: char array
+
+3. `nth`: the index/position where you want to override the data.
+
+```cpp	title="example"
+char hello[] = "Bonsoir";
+
+mem.TO("EM")
+	.UPDATE("nm", hello, 2)
+	.DONE();
+```
+
+## SELECT
+
+With this function you can retrieve dat from a table if you konw its name
+
+### Numerics data
+
+```cpp title="prototype"
+template <typename T>
+TableData& SELECT(char* c_name, T* data, int nth = 0)
+```
+
+1. `c_name`: the column name where you want to read the table data
+
+2.  `data`: a pointer to the variable that will hold the data read
+
+3. `nth`: the index/position where you want to read the data.
+
+- `return` an object reference of TableData type that can be used after to do more actions.
+
+
+```cpp title="example"
+int age = 0;
+mem.FROM("EM")
+	.SELECT("ag", &age)
+	.DONE();
+
+Serial.print("value read");
+Serial.println(age);
+```
+
+### Array of char
+
+Use in this case the second version of SELECT function
+
+```cpp title="prototype"
+TableData& SELECT(char* c_name, char* data, int nth = 0)
+```
+
+1. `c_name`: the column name where you want to read the table data
+
+2.  `data`: char array that will hold the data read
+
+3. `nth`: the index/position where you want to read the data.
+
+- `return` an object reference of TableData type that can be used after to do more actions.
+
+```cpp title="example"
+char name[10];
+
+mem.FROM("EM")
+	.SELECT("nm", name, 0)
+	.DONE();
+
+Serial.println(name);	
+```
+
+## SELECT_ALL
+
+You can select all data directly 
+
+### Numerics data
+
+```cpp title="prototype"
+template <typename T>
+TableData& SELECT_ALL(char* c_name, T* data, int& nbData)
+```
+
+1. `c_name`: the column name where you want to read the table data
+
+2. `data`: array that will hold the data read
+
+3. `nbData`: an reference to hold the amount of data read
+
+
+```cpp title="example"
+int all_age[5];
+float all_rate[5];
+int amount = 0;
+
+mem.FROM("EM")
+	.SELECT_ALL("ag", all_age, amount)
+	.SELECT_ALL("rt", all_rate, amount)
+	.DONE();
+
+for (size_t i = 0; i<amount; i++) {
+	Serial.println(all_age[i]);
+	Serial.println(all_rate[i]);
+}
+```
+
+### Array of char
+
+We don't provide yet an implementation of `SELECT_ALL` for char sequence. But
+you can write your own wrapper.
+
+## WHERE 
+Only for numerics data.
+
+You can filter that on what you want to work (get or write) and work so only on data 
+which match some conditions.
+
+```cpp title="prototype"
+template <typename T>
+TableData& WHERE(char* c_name, FILTER f, T* data)
+```
+
+1. `c_name`: the column name where you want to read the table data
+ 
+2. `f`: A filter enumeration. [Read filter doc to know them](../FILTER).
+
+3. `data`: data that will be used as comparator
+
+```cpp title="example"
+int max_age = 25;
+int all_age[5];
+int nb = 0;
+
+mem.FROM("EM")
+	.WHERE("ag", FILTER::isLessThan, &max_age)
+	.SELECT_ALL("ag", all_age, nb)
+	.DONE();
+
+for (size_t i = 0; i<nb; i++) {
+	Serial.println(all_age[i]);
+}
+
+
+// or somthing like this
+int min_val = 31;
+float em_rate = 7;
+
+mem.FROM("EM")
+	.WHERE("ag", FILTER::isGreaterThan, &min_val)
+	.WHERE("rt", FILTER::isNotEqualTo, &em_rate)
+	.DELETE(0)
+	.DONE();
+```
+
+__Yes I love this methods and I love chainning functions__
+
+:::info
+You can apply after using WHERE the following methods:
+- SELECT
+- SELECT_ALL
+- UPDATE
+- DELETE
+- DELETE_ALL
+- WHERE
+:::
+
+## DELETE
+
+You can also delete a data at any position in a table. Remember that trying to delete
+at a position means delete all data at this position for each columns of the table.
+If you use a filter fonction (`WHERE`), delete at index means delete the data which 
+match `WHERE` filter at this index
+
+```cpp title="prototype"
+TableData& DELETE(int nth = 0)
+```
+
+1. `nth`: the psoition (index) of data
+
+```cpp title="example"
+mem.TO("EM")
+	.DELETE(2)
+	.DONE();
+```
+
+## DELETE_ALL
+
+You can also delete all data at any position in a table. If you use a filter 
+fonction (`WHERE`), delete all means delete all data which 
+match `WHERE` filter
+
+```cpp title="prototype"
+TableData& DELETE_ALL(int& nbData)
+```
+
+1. `nbData`: a reference to hold the amount of data deleted
+
+```cpp title="example"
+int nb = 0;
+mem.TO("EM")
+	.DELETE_ALL(nb)
+	.DONE();
+
+Serial.print("Amount data deleted: "); Serial.println(nb);
+```
+
+## DONE
+
+This method must be called at the end of operations to be sure 
+to keep consistent a table data.
+
+```cpp title="prototype"
+void DONE()
+```
+
+:::info
+Let's say: **TO** and **FROM** functions open a connection to a table of
+the data base and **DONE** function close this connection.
+:::
+

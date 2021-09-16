@@ -1,0 +1,189 @@
+---
+title: MemoryManager
+sidebar_position: 1
+description: MemoryManager is the main class used to access to the data base
+---
+
+> MemoryManager is the main class used to access data base. You need
+an object of this class to write/read of tables.
+
+## TinyDatabase header
+
+Be sure that the library header was included in your sketch 
+
+```cpp title="header"
+#include <TinyDatabase_Arduino.h>
+```
+
+## Work on tables
+
+### Constructor
+
+```cpp title="constructor"
+MemoryManager()
+```
+
+To create an object
+
+```cpp title="example"
+MemoryManager mem;
+```
+
+### Table creation
+
+You can create easily a table by invoking `CREATE_TABLE` methods
+
+```cpp title="prototype"
+int CREATE_TABLE(char* tableName, 
+				uint8_t capacity, 
+				uint8_t col,
+                Column tableCol[])
+```
+
+1. `tableName`:	the name of your table - no more than 2 char
+
+2. `capacity`:	the maximum of data that the table can hold. If this
+value is attended the next data start override old data from the top
+
+3. `col`:	the number of columns for this table
+
+4. `tableCol`:	an array of columns structre. Its contain all table's
+columns with their name and type. Go to [Column](Column) to know
+more.
+
+- `return` a status code. The creation can be aborted if capacity value
+exceeds **255** or memory is not available or something else.
+[Check status code](../STATUS_CODE) to know more.
+
+
+```cpp title="example"
+Column allCols[] = {{"ag", "INT"}, {"rt", "FLOAT"}}; 
+mem.CREATE_TABLE("EM", 15, 2, allCols);
+```
+- We create firstly two columns named `ag` and `rt` of types `INT` and `FLOAT`. Read more
+about [TinyDatabase types](../Types) 
+- Then the table with name `EM` of `15` as its capacity. 
+
+:::danger
+Tables name and columns name cannot be more than 02 characters. Othwersie 
+we cut off and take only the first two char. They follow variables name
+structure.
+:::
+
+:::tip
+- For table name you can use uppercase letters like **EM** or **PT** or underscore
+as last char like **E_** or **P_**.
+- And use lowercase letter for columns name like **ag** or **hm**.
+:::
+
+### Display meta data
+
+You can print in Serial monitor informations about the data base: meta data.
+It contains amount of data, tables informations, address where these informations
+are stored
+
+```cpp title="prototype"
+void printMetaData()
+```
+
+```cpp title="example"
+int memAvailableStatus =  mem.printMetaData(); // open your serial monitor
+```
+
+### Table existence
+
+You can check if a table exists in the database if you know its name.
+
+```cpp title="prototype"
+int ON(char* tableName)
+```
+
+1. `tableName`: the name of the table you want to check
+
+- `return` a negative number (status code) if the table doesn't exist and 
+a positive number if it exists (the address where this tables meta data are stored). 
+
+### Set data
+
+There are two mains actions that can be done on a table: write or read.
+If you want to write or delete data on table:
+
+```cpp title="prototype"
+TableData& TO(char* tableName)
+```
+
+1. `tableName`: the name of table on what you want to work.
+
+- `return` a reference to private member of **MemoryManager** to allow you 
+to chain methods after when setting data on this table. If table doesn't exist, it
+return an invalid object of **TableData**.
+
+```cpp title="example"
+TableData t_data = mem.TO("EM");
+```
+
+### Get data
+
+In the cas where you want to get data from the table:
+
+```cpp title="prototype"
+TableData& FROM(char* tableName)
+```
+
+1. `tableName`: the name of table on what you want to work.
+
+- `return` a reference to private member of **MemoryManager** to allow you 
+to chain methods after when getting data from this table. If table doesn't exist, it
+returns an invalid object of **TableData**.
+
+```cpp title="example"
+TableData t_data = mem.FROM("EM");
+```
+
+:::tip
+- `TO` and `FROM` methods do the samething and has the same structure but it is
+more readable if you:
+- **TO** for `INSERT`, `UPDATE`, `DELETE`, `DELETE_ALL` queries;
+- **FROM** for `SELECT`,`SELECT_ALL`, queries.
+:::
+
+## Useful methods
+
+### Memory availability
+
+You can check if there is more memory available in the data base.
+
+```cpp title="prototype"
+int isMemoryAvailable(int need)
+```
+
+1. `need`: the amount of space. 
+
+- `return` a status code. [Check status code](../STATUS_CODE) to know more.
+
+### Data size
+
+You can check the possible amount data stored in the database (sum of all 
+capacity).
+
+```cpp title="prototype"
+int size()
+```
+
+```cpp title="example"
+int amount = mem.size();
+```
+
+### Amount of tables
+
+You can also check the number of tables 
+
+```cpp title="prototype"
+uint8_t nbTables()
+```
+
+:::caution
+You cannot create more than **255** tables in the database.
+:::
+
+

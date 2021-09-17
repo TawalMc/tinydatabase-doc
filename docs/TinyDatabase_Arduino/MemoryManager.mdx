@@ -100,7 +100,7 @@ void printMetaData()
 ```
 
 ```cpp title="example"
-int memAvailableStatus =  mem.printMetaData(); // open your serial monitor
+mem.printMetaData(); // open your serial monitor
 ```
 
 ### Table existence
@@ -173,6 +173,10 @@ int isMemoryAvailable(int need)
 1. `need`: the amount of space. 
 
 - `return` a status code. [Check status code](../STATUS_CODE) to know more.
+
+```cpp title="example"
+int memAvailableStatus =  mem.isMemoryAvailable(100); // open your serial monitor
+```
 
 ### Data size
 

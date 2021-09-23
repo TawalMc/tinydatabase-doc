@@ -53,7 +53,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             position: 'left',
             label: 'Documentation',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/TawalMc/tinydatabase-doc',
             label: 'GitHub',
@@ -105,10 +105,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
                 label: 'Tawal Dev Universe',
                 href: 'https://tawaldevuniverse.vercel.app/',
               },
+              {
+                label: 'YoupiLab',
+                href: 'https://youpilab.com/',
+              },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} TinyDatabase doc by Tawaliou and generated with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} TinyDatabase doc supported by YoupiLab and generated with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,

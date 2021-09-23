@@ -82,12 +82,10 @@ We plan to write a version for `RTC` (clock module) which has more memory.
 
 ## Contributor
 
-`This library was built and maintained by` [Tawaliou ALAO](https://github.com/TawalMc). 
+`This library was built and maintained by` [Tawaliou ALAO](https://github.com/TawalMc)` Engineer at YoupiLab`. 
 
 - _Thanks to my brother ALIDOU Abdoul Majeed who help me to define the database architecture_
 
 - _Thanks to [YoupiLab](https://youpilab.com/) to support the project_
 
 - [Here is the documentation](https://tinydatabase-doc.vercel.app/)
-
-- [TinyDatabase_Arduino](https://github.com/TawalMc/TinyDatabase_Arduino)
